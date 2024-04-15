@@ -155,6 +155,13 @@ td{
 .adding {
     display: flex;
     justify-content: center;
+    /* flex-direction: column;
+    align-items: center; */
+}
+
+.adding p{
+    font-size: 22px;
+    font-weight: 600;
 }
 
 .p p{

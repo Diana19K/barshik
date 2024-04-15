@@ -1,3 +1,11 @@
+<?php
+include '..//connect.php';
+$query = "SELECT * FROM Product INNER JOIN Category on Product.Category_id = Category.Category_id  where Id_product";
+$result = mysqli_query($con, $query);
+$result1 = mysqli_fetch_all($result);
+$query_cat = mysqli_query($con, "SELECT * FROM Category");
+$cat_result = mysqli_fetch_all($query_cat);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,31 +64,31 @@
                 <th>Описание</th>
                 <th>Миниатюра</th>
             </tr>
-            <?php
-        // Подключение к базе данных
-        include('..//connect.php');
-
-        // Запрос к базе данных
-        $result = mysqli_query($con, "SELECT * FROM Product");
-
-        // Вывод данных в таблице HTML
-        while($row = mysqli_fetch_assoc($result)) {
-            echo '<tr>';
-            echo '<td>'.$row['Name'].'</td>';
-            echo '<td>'.$row['Category_id'].'</td>';
-            echo '<td>'.$row['Price'].'</td>';
-            echo '<td>'.$row['Description'].'</td>';
-            echo '<td><img src="..//images/'.$row['Image'].'" alt="Миниатюра"></td>';
-            echo "<td><a href='edit_product.php?id=".$row['id']."'>Редактировать</a></td>";
-            echo '<td><button type="button" class="btn btn-outline-danger">Удалить</button></td>';
-            echo '</tr>';
-        }
-        ?>
+            <?php foreach ($result1 as $item):?>
+            <tr>
+            <form action="edit_product.php?id=<?=$item[0]?>" method="POST" enctype="multipart/form-data">
+                <td><input type="text" name='Name' value = "<?=$item[1]?>"></td>
+                <td>   
+                    <select  class="form_card" name="cat" id="">
+                <option value="<?=$item[3]?>" selected><?=$item[7]?></option>  
+            <?php foreach ($cat_result as $value_2) {?>  
+                        <option value="<?=$value_2[0]?>"><?=$value_2[1]?></option>  
+                    <?php }?>  
+                </select> </td>
+                <td><input type="number" name='Price' value = "<?=$item[4]?>"></td>
+                <td><input type="text" name='Desc' value = "<?=$item[2]?>"></td>
+                <td> <img src="../images/<?=$item[5]?>" alt="" height = "100px" width = "100px"></td>
+                <td><input type="file" name='file'></td>
+                <td><input type="submit" class="btn btn-outline-success" value="Редактировать"></td>
+                </form>
+                <td><a href="delete_product.php?id=<?=$item[0]?>"><button type="button" class="btn btn-outline-danger" >Удалить</button></a></td>
+            </tr>
+            <?php endforeach;?>
         </table>
     </div>
     <div class="p">
         <p>Добавление товара</p>
-        <form action="product-add.php" class="adding" method="POST" >
+        <form action="product-add.php" class="adding" method="POST">
             <input required type="text" name="Name" id="" placeholder="Название">
               
                 <select required id="Categ" name="Categ">

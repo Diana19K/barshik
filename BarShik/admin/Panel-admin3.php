@@ -46,34 +46,31 @@
     <div class="products">
         <table>
             <tr>
+                <th>Id</th>
                 <th>Название категории</th>
-                <th>Количество</th>
             </tr>
-            <tr>
-                <th>Margaret Nguyen</th>
-                <td>427311</td>
-                <td><button><img src="/add_1237946.png" alt=""></button></td>
-                <td><button><img src="/shape_12205851.png" alt=""></button></td>
-            </tr>
-            <tr>
-                <th>Edvard Galinski</th>
-                <td>533175</td>
-                <td><button><img src="/add_1237946.png" alt=""></button></td>
-                <td><button><img src="/shape_12205851.png" alt=""></button></td>
-            </tr>
-            <tr>
-                <th>Hoshi Nakamura</th>
-                <td>601942</td>
-                <td><button><img src="/add_1237946.png" alt=""></button></td>
-                <td><button><img src="/shape_12205851.png" alt=""></button></td>
-            </tr>
+            <?php
+        include('..//connect.php');
+
+        $result = mysqli_query($con, "SELECT * FROM Category");
+
+        while($row = mysqli_fetch_assoc($result)) {
+            echo '<tr>';
+            echo '<td>'.$row['Category_id'].'</td>';
+            echo '<td>'.$row['Name'].'</td>';
+            echo '<td><button type="button" class="btn btn-outline-success">Редактировать</button></td>';
+            echo '<td><button type="button" class="btn btn-outline-danger">Удалить</button></td>';
+            echo '</tr>';
+        }
+        ?>
         </table>
     </div>
-    <div class="adding">
-        <p>Добавление товара</p>
-        <form action="">
-            <input type="text" name="Name" id="" placeholder="Название">
-            <input type="text" name="Cated" id="" placeholder="Категория">
+    <div class="p">
+        <p>Добавление категории</p>
+        <form action="cat-add.php" class="adding" method="POST">
+            <input type="text" name="Cated" id="" placeholder="Id категории">
+            <input type="text" name="Name" id="" placeholder="Название категории">
+
             <input type="submit" value="Отправить" placeholder="Создать">
         </form>
     </div>
