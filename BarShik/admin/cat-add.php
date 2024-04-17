@@ -1,18 +1,11 @@
 <?php
 include "../connect.php";
+$Name = isset($_POST['Name'])?$_POST['Name']:false;
 
-$category = $_POST['Cated'];
-$name = $_POST['Name'];
-
-$categoryid = intval($category);
-
-// SQL запрос для добавления категории
-$sql = "INSERT INTO Category(Category_id, Name) VALUES ('$categoryid', '$name')";
-
-if ($con->query($sql) === TRUE) {
-    echo "Категория успешно добавлена";
-    header('Location: Panel-admin3.php');
-} else {
-    echo "Ошибка при добавлении категории: " . $con->error;
+if($Name){
+    $result_add = mysqli_query($con, "INSERT INTO Category (`Name`) VALUES ('$Name')");
+    echo"<script>alert('Категория создана');
+    location.href ='Panel-admin3.php';
+    </script>";
 }
 ?>

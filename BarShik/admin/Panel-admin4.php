@@ -1,3 +1,7 @@
+<?php
+include "../connect.php";
+$Info_orders = mysqli_fetch_all(mysqli_query($con,"SELECT * from `Orders`"));
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,28 +32,83 @@
         </div>
     </nav>
 </header>
-    <div class="Order">
+<div class="products">
         <table>
+            <thead>
+                <tr>    
+                    <th>Номер заказа</th>
+                    <th>пользователь </th>
+                    <th>Дата</th>
+                    <th>Состав заказа</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                    <th>Отзыв</th>
+                    <th>Изменить</th>
+                </tr>
+            </thead>
+            <tbody> <?php foreach ($Info_orders as $orders) {    
+                    $Info_user = mysqli_fetch_all(mysqli_query($con,"SELECT * from `Users` 
+                    INNER JOIN Orders on Users.User_id = Orders.User_id
+                    where Id_order	= $orders[0]"));
+                    $info_product = mysqli_fetch_all(mysqli_query( $con,"SELECT * FROM Order_Product 
+                    INNER JOIN Orders ON Order_Product.Id_order = Orders.Id_order
+                    INNER JOIN Product ON Order_Product.Id_product = Product.Id_product"));
+                    $total_sum = 0; // Инициализация переменной для подсчета общей суммы заказа
+                    // foreach ($info_product as $product1) {
+                    //     $total_sum += $product1[3] * $product1[16]; // Накапливаем общую сумму заказа
+                    // }
+                ?>
             <tr>
-                <th>Номер</th>
-                <th>Дата</th>
-                <th>Статус</th>
-                <th>Общая стоимость</th>
-            </tr>
-            <tr>
-                <td><a href="/Panel-admin4-1.html"></a></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button><img src="/shape_12205851.png" alt=""></button></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button><img src="/shape_12205851.png" alt=""></button></td>
-            </tr>
+                <form action="order_update.php" method ="POST">
+                    <td> <input type="text" name = "id"  value = "<?=$orders[0]?>" readonly></td>
+                    <td>
+                    <?php foreach ($Info_user as $User) {?>
+                    <p><?=$User[1]?><br></p>
+                        <div class="modal fade" id="feedback" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Просмотр отзыва</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                          </div>
+                          <div class="modal-body">
+                          <form action="New_comment.php" method = "POST">
+                              <div class="mb-3">
+                                <input type="text" name="ID" value="<?=$orders[0]?>" >
+                                <label for="message-text" class="col-form-label">Пользователь</label>
+                                <input type="text" name="name"readonly value="<?=$User[1]?>" >
+                                <label for="message-text" class="col-form-label">Отзыв</label>
+                                <input type="text" name="comennt"readonly value="<?=$orders[7]?>" >
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Оставить отзыв</button>
+                          </div>
+                    <?php } ?></td>
+                    <td><?=$orders[2]?></td>
+                    <td>
+                    <?php foreach ($info_product as $product) {?>
+                    <p><?=$product[13]?> <?=$product[3]?> шт<br></p>
+                    <?php } ?></td>
+                    <td><?=$total_sum?></td>
+                    <td>                                    
+                    <select  name = "delevery" value="">
+                        <option name="" id="" selected value = "<?=$orders[3]?>" ><?=$orders[3]?></option>
+                        <option name="" id="" value ="Доставлен">Доставлен</option>
+                        <option name="" id="" value ="В доставке">В доставке</option>
+                        <option name="" id="" value ="Готовим">Готовим</option>
+                    </select></td>
+                    <td><a href="" data-bs-toggle="modal" data-bs-target="#feedback" >Просмотр отзыва</a></td>
+                    <td><input type="submit" class="btn btn-outline-success" value="Редактировать"></td>    
+                </form>
+                <td>
+                    <?php foreach ($Info_orders as $item) { ?>
+                        <button type="button" class="btn btn-outline-danger"><a href="order_delete.php?id=<?=$item[0]?>">Удалить</a></button>
+                    <?php }?>
+                </td>
+                </tr>
+                <?php } ?>
+            </tbody>
         </table>
     </div>
 </body>

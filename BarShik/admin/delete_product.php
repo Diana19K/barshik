@@ -9,10 +9,11 @@ $query_delete = "DELETE FROM Product WHERE Id_product = $id";
 $result = mysqli_query($con, $query_delete);  
 
 if($result){  
-    echo "<script>alert('Данные удалены!'); location:href = '/admin';</script>";  
+    echo "<script>alert('Данные удалены!');</script>";  
     header("Location: Panel-admin2.php");  
 }  
 else{  
-    echo "<script> alert('Ошибка удаления!".mysqli_error($con)."'); location:href = '/admin';</script>";  
+    echo "<script> alert('Ошибка удаления!".mysqli_error($con)."');</script>";  
+    header("Location: Panel-admin2.php"); 
 }      
 ?>

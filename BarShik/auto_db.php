@@ -4,16 +4,16 @@ $password = trim( $_POST['password']);
 
 include "connect.php";
 
-$result = mysqli_query($con, "SELECT * FROM Users WHERE `Email` = '$email' and `Password_hash` = '$password'");
+$result = mysqli_query($con, "SELECT * FROM Users WHERE Email = '$email' and Password_hash = '$password'");
 
 $user = mysqli_fetch_array($result);
 
 $user_id = $user["User_id"];
 if (!empty($user_id)) {
-    if ($querryUser['role'] == 'user') {
-        
+    if ($user['role'] === 'user') {
         header('Location: personal-cab.php');
-    } else {
+
+    } else if ($user['role'] === 'admin') {
         header('Location: admin/Panel-admin1.php');
     }
 }
