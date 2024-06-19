@@ -5,20 +5,20 @@
 main{
     width: 100%;
     display: flex;
-    height: 101vh;
+    /* height: 101vh; */
     align-items: center;
 }
 .form-user-info{
     display: flex;
     flex-direction: column;
     width: 20%;
-    height: 25vh;
+    /* height: 11vh; */
     justify-content: space-evenly;
-    align-items: center;
+    /* align-items: center; */
 }
 .blok-main{
     width: 100%;
-    height: 35vh;
+    /* height: 35vh; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -47,14 +47,15 @@ input {
     border-radius: 5px;
 }
 /* стили для таблицы заказов */
-.order-history {
+/* .order-history {
     max-width: 600px;
     margin: 0 auto;
-}
+} */
 
 table {
     width: 100%;
     border-collapse: collapse;
+    text-align: center;
 }
 
 th, td {

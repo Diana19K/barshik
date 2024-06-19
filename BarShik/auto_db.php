@@ -1,20 +1,22 @@
 <?php
+session_start();
+include "connect.php";
 $email = trim($_POST['email']);
 $password = trim( $_POST['password']);
-
-include "connect.php";
-
-$result = mysqli_query($con, "SELECT * FROM Users WHERE Email = '$email' and Password_hash = '$password'");
-
+$result = mysqli_query($con, "SELECT * FROM Users WHERE `Email` = '$email' and `Password_hash` = '$password'");
 $user = mysqli_fetch_array($result);
 
 $user_id = $user["User_id"];
-if (!empty($user_id)) {
-    if ($user['role'] === 'user') {
+if (isset($user_id)) {
+    if ($user['role'] == 'user') {
+    $_SESSION["User_id"] = $user["User_id"];
+    $_SESSION["role"] = $user["role"];
+    $_SESSION["message"] = "Вы успешно авторизировались как пользователь";
+        // setcookie('User_id', $user_id, time() + 3600, "/");
         header('Location: personal-cab.php');
-
-    } else if ($user['role'] === 'admin') {
-        header('Location: admin/Panel-admin1.php');
+    } else {
+        $_SESSION["message"] = "Вы успешно авторизировались как администратор";
+        header('Location:admin\newTovar.php');
     }
 }
 else {
@@ -22,6 +24,4 @@ else {
     location.href = 'auto.php';
     </script>";
 }
-
-setcookie('User_id', $user_id, time() + 3600, "/");
 ?>

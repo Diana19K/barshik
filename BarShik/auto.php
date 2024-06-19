@@ -15,10 +15,10 @@
     <div class="auto-main">
         <h2>Авторизация</h2>
         <form action="auto_db.php" method="post" class="form-auto">
-            <input required  type="email" name="email" placeholder="email">
-            <input required   type="password" name="password" placeholder="password">
+            <input required  type="email" name="email" placeholder=" email">
+            <input required   type="password" name="password" placeholder="пароль">
             <button class = "entrance">Войти</button>
-            <p>Нет аккаунта? <a href="reg.php">Зарегистрируйтесь</a></p>
+            <p>нет аккаунта,<a href="reg.php">зарегистрироваться</a></p>
         </form>
     </div>
 </body>
